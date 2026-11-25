@@ -20,6 +20,7 @@ export function Nav() {
       </button>
       <div id="nav-links" className="nav-links" data-open={open}>
         <a href="#product" onClick={close}>PRODUCT</a>
+        <a href="#demo" onClick={close}>DEMO</a>
         <a href="#features" onClick={close}>FEATURES</a>
         <a href="#architecture" onClick={close}>ARCHITECTURE</a>
         <a href="#platforms" onClick={close}>PLATFORMS</a>

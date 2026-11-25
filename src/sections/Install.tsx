@@ -7,7 +7,7 @@ export function Install() {
       <div className="atmosphere atmosphere-two" aria-hidden="true" />
       <Reveal className="install-layout">
         <div>
-          <Eyebrow>06 / INSTALL</Eyebrow>
+          <Eyebrow>07 / INSTALL</Eyebrow>
           <h2>One command. Then your terminal.</h2>
           <p>
             Run the installer, then launch Quick Mode with <code>salat</code> or the complete

@@ -12,13 +12,13 @@ releases live in the canonical repository,
 ## What is on the page
 
 Hero with a copyable install command, Quick Mode and Full TUI, capabilities,
-the Status screen, Adhan behaviour, architecture, install and platform
+the Status screen, an interactive browser simulation of the interface, Adhan behaviour, architecture, install and platform
 requirements, and links to the documentation, releases, issues and
 contribution guide.
 
 **Content rules.** Every claim comes from the Salat repository
 (`README.md` and `docs/`). The two screenshots are real captures of Salat
-v0.1.0 (`src/assets/`), and there is no simulated terminal output. Platform
+v0.1.0 (`src/assets/`), and the one interactive terminal (`src/SalatTUI.tsx`) is labelled on the page as a simulation with sample data. Platform
 statement: Linux x86_64 is the only supported platform; Linux ARM64 is
 planned; native Windows and macOS are unsupported; WSL2 is not officially
 supported. When Salat's documentation changes, update `src/content.ts` and the
@@ -31,8 +31,10 @@ Instrument Sans) are self-hosted through `@fontsource`, so the page makes no
 third-party requests. There is no analytics and no cookie.
 
 The design comes from a Figma Make project and keeps its layout, palette and
-typography. The simulated interactive terminal in that design was left out, to
-keep to real product output only.
+typography. Its interactive terminal simulation is included, lazy-loaded and clearly
+labelled as sample data. It does not run Salat or fetch prayer times; its
+sample values are not product output, so check it against Salat when the
+product changes.
 
 ## Development
 

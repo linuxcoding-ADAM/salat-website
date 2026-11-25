@@ -5,6 +5,7 @@ import { Architecture } from "./sections/Architecture";
 import { Features } from "./sections/Features";
 import { FullTui } from "./sections/FullTui";
 import { Hero } from "./sections/Hero";
+import { Demo } from "./sections/Demo";
 import { Install } from "./sections/Install";
 import { Modes } from "./sections/Modes";
 import { OpenSource } from "./sections/OpenSource";
@@ -19,6 +20,7 @@ export default function App() {
         <Modes />
         <Features />
         <FullTui />
+        <Demo />
         <Adhan />
         <Architecture />
         <Install />

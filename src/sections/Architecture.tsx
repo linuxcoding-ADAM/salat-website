@@ -6,7 +6,7 @@ export function Architecture() {
     <section className="page-section architecture-section" id="architecture">
       <Reveal>
         <SectionHeading
-          eyebrow="05 / ARCHITECTURE"
+          eyebrow="06 / ARCHITECTURE"
           title="A local tool with explicit boundaries."
           copy="Remote prayer data enters once, is validated and cached, then feeds the scheduler and terminal views."
         />

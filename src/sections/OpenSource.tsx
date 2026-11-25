@@ -14,7 +14,7 @@ export function OpenSource() {
   return (
     <section className="page-section open-source-section">
       <Reveal>
-        <Eyebrow>07 / OPEN SOURCE</Eyebrow>
+        <Eyebrow>08 / OPEN SOURCE</Eyebrow>
         <h2>Built in the open.<br />Inspectable by default.</h2>
         <p>
           Read the implementation, report a problem, or contribute a fix. Salat is dual-licensed

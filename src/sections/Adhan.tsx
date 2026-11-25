@@ -11,7 +11,7 @@ export function Adhan() {
     <section className="page-section adhan-section">
       <Reveal className="adhan-layout">
         <div>
-          <Eyebrow>04 / AT PRAYER TIME</Eyebrow>
+          <Eyebrow>05 / AT PRAYER TIME</Eyebrow>
           <h2>A clear state change. Nothing ambiguous.</h2>
           <p>
             When a configured event fires, Salat presents a distinct Adhan state and starts your
