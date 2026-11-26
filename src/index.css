@@ -240,15 +240,24 @@ h1, h2, h3 { font-family: var(--sans); }
 .px-loop-ch.is-pixel { font-family: var(--pixel); }
 
 /* On hover the text turns green, then each character quickly becomes a pixel one. */
-.nav-links a:hover:not(.nav-cta),
-.feature-ledger h3:hover { color: var(--green); }
-.nav-links a:hover .px-hover-ch,
-.feature-ledger h3:hover .px-hover-ch {
-  animation: px-morph 90ms step-end forwards;
-  animation-delay: calc(var(--i) * 35ms);
+/* The whole link / feature row is the hover area. When the pointer leaves, the characters go
+   back to the normal font in the opposite order (last one first), and the colour follows once
+   the last one is back. --n is the character count and --i the character index. */
+.pixel-hover { transition: color 0s linear calc(var(--n) * 35ms); }
+.px-hover-ch {
+  transition: font-family 40ms linear;
+  transition-behavior: allow-discrete;
+  transition-delay: calc((var(--n) - 1 - var(--i)) * 35ms);
 }
-@keyframes px-morph {
-  to { font-family: var(--pixel); }
+.nav-links a:hover .pixel-hover,
+.feature-ledger article:hover .pixel-hover {
+  color: var(--green);
+  transition-delay: 0s;
+}
+.nav-links a:hover .px-hover-ch,
+.feature-ledger article:hover .px-hover-ch {
+  font-family: var(--pixel);
+  transition-delay: calc(var(--i) * 35ms);
 }
 /* A green line grows from the left under the hovered navigation link. */
 .nav-links a:not(.nav-cta) { position: relative; }
