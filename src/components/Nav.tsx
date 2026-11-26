@@ -1,5 +1,6 @@
 import { Logo } from "./Logo";
 import { useState } from "react";
+import { PixelHover } from "./PixelText";
 import { GITHUB } from "../content";
 
 export function Nav() {
@@ -20,12 +21,12 @@ export function Nav() {
         {open ? "CLOSE" : "MENU"}
       </button>
       <div id="nav-links" className="nav-links" data-open={open}>
-        <a href="#product" onClick={close}>PRODUCT</a>
-        <a href="#demo" onClick={close}>DEMO</a>
-        <a href="#features" onClick={close}>FEATURES</a>
-        <a href="#architecture" onClick={close}>ARCHITECTURE</a>
-        <a href="#platforms" onClick={close}>PLATFORMS</a>
-        <a href={GITHUB} target="_blank" rel="noreferrer">GITHUB ↗</a>
+        <a href="#product" onClick={close}><PixelHover text="PRODUCT" fixed /></a>
+        <a href="#demo" onClick={close}><PixelHover text="DEMO" fixed /></a>
+        <a href="#features" onClick={close}><PixelHover text="FEATURES" fixed /></a>
+        <a href="#architecture" onClick={close}><PixelHover text="ARCHITECTURE" fixed /></a>
+        <a href="#platforms" onClick={close}><PixelHover text="PLATFORMS" fixed /></a>
+        <a href={GITHUB} target="_blank" rel="noreferrer"><PixelHover text="GITHUB ↗" fixed /></a>
         <a className="nav-cta" href="#install" onClick={close}>INSTALL</a>
       </div>
     </nav>

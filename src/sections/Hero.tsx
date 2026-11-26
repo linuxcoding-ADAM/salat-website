@@ -1,5 +1,5 @@
 import dashboard from "../assets/salat-dashboard.png";
-import { PixelHeadline } from "../components/PixelHeadline";
+import { PixelLoop } from "../components/PixelText";
 import { CopyButton, Eyebrow, ProductScreenshot, Reveal } from "../components/ui";
 import { GITHUB, INSTALL_COMMAND, VERSION } from "../content";
 
@@ -10,8 +10,8 @@ export function Hero() {
       <Reveal className="hero-copy">
         <Eyebrow>RUST · RATATUI · LINUX</Eyebrow>
         <h1>
-          <PixelHeadline text="Prayer times." />
-          <span>In your terminal.</span>
+          <span className="hero-white">Prayer times.</span>
+          <PixelLoop text="In your terminal." />
         </h1>
         <p className="hero-lede">
           A keyboard-first prayer-time assistant for Linux. See the next prayer, run a full
