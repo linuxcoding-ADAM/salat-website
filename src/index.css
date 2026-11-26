@@ -109,7 +109,6 @@ button:focus-visible,
   letter-spacing: 0.1em;
   text-decoration: none;
 }
-.nav-links a:hover { color: var(--text-bright); }
 .nav-links .nav-cta {
   margin-left: 8px;
   padding-inline: 18px;
@@ -217,36 +216,46 @@ h1, h2, h3 { font-family: var(--sans); }
 .hero h1 {
   margin-bottom: 24px;
   color: var(--text-bright);
-  font-family: var(--pixel);
+  font-family: var(--sans);
   font-weight: 700;
   font-size: clamp(40px, 4.3vw, 62px);
   line-height: 1.08;
   letter-spacing: -0.01em;
 }
-.hero h1 > span:not(.pixel-headline) {
-  display: block;
-  color: var(--green);
+.hero-white { display: block; }
+.pixel-loop { display: block; color: var(--green); }
+
+/* Per-character font effects (see PixelText.tsx). */
+.px-word { display: inline-block; white-space: nowrap; }
+
+/* Green text that never stops swapping, character by character, between the two fonts. */
+.px-loop-ch {
+  animation: px-loop 3s step-end infinite;
+  animation-delay: calc(var(--i) * 110ms);
+}
+@keyframes px-loop {
+  0% { font-family: var(--sans); }
+  40% { font-family: var(--pixel); }
+  70% { font-family: var(--sans); }
+  100% { font-family: var(--sans); }
 }
 
-/* "Prayer times." is generated in green pixels, then turns white. */
-.pixel-word { display: inline-block; white-space: nowrap; }
-.pixel-char {
+/* On hover the text turns green, then each character quickly becomes a pixel one. */
+.nav-links a:hover:not(.nav-cta),
+.feature-ledger h3:hover { color: var(--green); }
+.nav-links a:hover .px-hover-ch,
+.feature-ledger h3:hover .px-hover-ch {
+  animation: px-morph 90ms step-end forwards;
+  animation-delay: calc(var(--i) * 35ms);
+}
+@keyframes px-morph {
+  to { font-family: var(--pixel); }
+}
+/* Constant-width boxes: the navigation does not shift while the font changes. */
+.pixel-hover-fixed .px-hover-ch {
   display: inline-block;
-  min-width: 0.02em;
-  animation:
-    pixel-in 520ms steps(6, end) var(--d) both,
-    pixel-white 700ms ease 1900ms both;
-}
-@keyframes pixel-in {
-  0% { opacity: 0; color: var(--green); text-shadow: 0 0 0 transparent; }
-  25% { opacity: 1; color: var(--green); text-shadow: 0 0 14px rgba(74, 222, 128, 0.9); }
-  45% { opacity: 0.25; color: var(--green); }
-  65% { opacity: 1; color: var(--green); text-shadow: 0 0 10px rgba(74, 222, 128, 0.7); }
-  100% { opacity: 1; color: var(--green); text-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
-}
-@keyframes pixel-white {
-  from { color: var(--green); text-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
-  to { color: var(--text-bright); text-shadow: 0 0 0 transparent; }
+  width: 0.7em;
+  text-align: left;
 }
 
 .hero-lede {
@@ -815,5 +824,4 @@ footer p { margin: 8px 0 0; color: var(--dim); font-size: 9px; }
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
-  .pixel-char { animation: none; color: var(--text-bright); opacity: 1; }
 }

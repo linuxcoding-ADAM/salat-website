@@ -1,3 +1,4 @@
+import { PixelHover } from "../components/PixelText";
 import { Reveal, SectionHeading } from "../components/ui";
 import { features } from "../content";
 
@@ -14,7 +15,9 @@ export function Features() {
           {features.map(([number, title, copy]) => (
             <article key={number}>
               <span>{number}</span>
-              <h3>{title}</h3>
+              <h3>
+                <PixelHover text={title} />
+              </h3>
               <p>{copy}</p>
             </article>
           ))}

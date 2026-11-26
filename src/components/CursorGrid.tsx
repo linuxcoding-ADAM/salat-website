@@ -29,6 +29,11 @@ const LOGO = [
 const IDLE_MS = 450; // pointer stillness before the mark forms
 const FORM_MS = 260; // how long one square takes to light up
 const STAR: [number, number, number] = [226, 238, 232];
+// The resting mark is small and faint, so it blends into the background instead of standing out.
+const LOGO_CELL = 6; // px, including the gap
+const LOGO_GAP = 1;
+const LOGO_ALPHA = 0.4; // peak opacity of the moon squares
+const STAR_ALPHA = 0.3; // peak opacity of the star squares
 
 type Cell = {
   x: number;
@@ -119,21 +124,22 @@ export function CursorGrid() {
     /** Light the Salat mark, centred on the pointer and snapped to the grid. */
     function formLogo() {
       if (!target) return;
-      const cols = Math.ceil(width / CELL) + 1;
+      const cols = Math.ceil(width / LOGO_CELL) + 1;
       const rows = LOGO.length;
       const w = LOGO[0].length;
-      const c0 = Math.round(target.x / CELL - w / 2);
-      const r0 = Math.round(target.y / CELL - rows / 2);
+      const c0 = Math.round(target.x / LOGO_CELL - w / 2);
+      const r0 = Math.round(target.y / LOGO_CELL - rows / 2);
       LOGO.forEach((line, ry) =>
         [...line].forEach((ch, rx) => {
           if (ch === ".") return;
           const c = c0 + rx;
           const r = r0 + ry;
-          if (c < 0 || r < 0 || c * CELL > width || r * CELL > height) return;
+          if (c < 0 || r < 0 || c * LOGO_CELL > width || r * LOGO_CELL > height) return;
           const d = Math.hypot(rx - w / 2, ry - rows / 2);
-          cells.set(r * cols + c, {
-            x: c * CELL,
-            y: r * CELL,
+          // Negative keys keep the mark apart from the trail squares, which use another grid.
+          cells.set(-1 - (r * cols + c), {
+            x: c * LOGO_CELL,
+            y: r * LOGO_CELL,
             v: 0,
             hold: true,
             star: ch === "S",
@@ -174,11 +180,11 @@ export function CursorGrid() {
           cell.age = (cell.age ?? 0) + dt;
           const t = Math.max(0, (cell.age - (cell.delay ?? 0)) / FORM_MS);
           if (t < 1) forming = true;
-          const v = Math.min(1, t);
-          // Moon squares vary between the brighter greens, like a contribution graph; the star is pale.
-          const tone = cell.star ? STAR : GREENS[2 + (hash(key + 31) > 0.5 ? 1 : 0)];
+          const v = Math.min(1, t) * (cell.star ? STAR_ALPHA : LOGO_ALPHA);
+          // Moon squares vary between two greens, like a contribution graph; the star is pale.
+          const tone = cell.star ? STAR : GREENS[1 + (hash(key + 31) > 0.5 ? 1 : 0)];
           ctx!.fillStyle = `rgba(${tone[0]}, ${tone[1]}, ${tone[2]}, ${v})`;
-          ctx!.fillRect(cell.x, cell.y, CELL - GAP, CELL - GAP);
+          ctx!.fillRect(cell.x, cell.y, LOGO_CELL - LOGO_GAP, LOGO_CELL - LOGO_GAP);
           continue;
         }
         cell.v -= fade;
