@@ -14,7 +14,34 @@ const GREENS: [number, number, number][] = [
   [74, 222, 128],
 ];
 
-type Cell = { x: number; y: number; v: number };
+// The Salat mark (pixel crescent and star), one grid square per character:
+// M = moon, S = star. It appears where the pointer comes to rest.
+const LOGO = [
+  "...........",
+  "...MM...S..",
+  "..MM...SSS.",
+  ".MMM....S..",
+  "MMM........",
+  "MMMM.......",
+  "MMMM.......",
+  "MMMMM......",
+  ".MMMMMMMM..",
+  "..MMMMMM...",
+  "...MMMM....",
+];
+const IDLE_MS = 450; // pointer stillness before the mark forms
+const FORM_MS = 260; // how long one square takes to light up
+const STAR: [number, number, number] = [226, 238, 232];
+
+type Cell = {
+  x: number;
+  y: number;
+  v: number;
+  hold?: boolean; // part of the resting mark: stays lit until the pointer moves
+  star?: boolean;
+  delay?: number; // ms before this square starts to light up
+  age?: number;
+};
 
 /** A stable pseudo-random number per cell, so a cell's brightness never flickers. */
 function hash(n: number) {
@@ -47,6 +74,7 @@ export function CursorGrid() {
     let width = 0;
     let height = 0;
     let last = 0;
+    let idleTimer = 0;
     let target: { x: number; y: number } | null = null; // where the pointer is
     let lit: { x: number; y: number } | null = null; // the smoothed point that lights cells
 
@@ -81,6 +109,45 @@ export function CursorGrid() {
       }
     }
 
+    function release() {
+      window.clearTimeout(idleTimer);
+      for (const cell of cells.values()) {
+        if (cell.hold) {
+          cell.hold = false;
+          cell.v = Math.min(cell.v, 1);
+        }
+      }
+    }
+
+    /** Light the Salat mark, centred on the pointer and snapped to the grid. */
+    function formLogo() {
+      if (!target) return;
+      const cols = Math.ceil(width / CELL) + 1;
+      const rows = LOGO.length;
+      const w = LOGO[0].length;
+      const c0 = Math.round(target.x / CELL - w / 2);
+      const r0 = Math.round(target.y / CELL - rows / 2);
+      LOGO.forEach((line, ry) =>
+        [...line].forEach((ch, rx) => {
+          if (ch === ".") return;
+          const c = c0 + rx;
+          const r = r0 + ry;
+          if (c < 0 || r < 0 || c * CELL > width || r * CELL > height) return;
+          const d = Math.hypot(rx - w / 2, ry - rows / 2);
+          cells.set(r * cols + c, {
+            x: c * CELL,
+            y: r * CELL,
+            v: 0,
+            hold: true,
+            star: ch === "S",
+            delay: d * 40,
+            age: 0,
+          });
+        }),
+      );
+      wake();
+    }
+
     function frame(now: number) {
       raf = 0;
       const dt = Math.min(now - (last || now), 50);
@@ -93,15 +160,30 @@ export function CursorGrid() {
         const ny = lit.y + (target.y - lit.y) * FOLLOW;
         const dist = Math.hypot(nx - lit.x, ny - lit.y);
         const steps = Math.max(1, Math.ceil(dist / (CELL / 2)));
-        for (let i = 1; i <= steps; i++) {
-          light(lit.x + ((nx - lit.x) * i) / steps, lit.y + ((ny - lit.y) * i) / steps);
+        // Only a moving pointer lights squares; one that has come to rest lets them fade.
+        if (dist > 0.3) {
+          for (let i = 1; i <= steps; i++) {
+            light(lit.x + ((nx - lit.x) * i) / steps, lit.y + ((ny - lit.y) * i) / steps);
+          }
         }
         lit = { x: nx, y: ny };
       }
 
       ctx!.clearRect(0, 0, width, height);
       const fade = dt / FADE_MS;
+      let forming = false;
       for (const [key, cell] of cells) {
+        if (cell.hold) {
+          cell.age = (cell.age ?? 0) + dt;
+          const t = Math.max(0, (cell.age - (cell.delay ?? 0)) / FORM_MS);
+          if (t < 1) forming = true;
+          const v = Math.min(1, t);
+          // Moon squares vary between the brighter greens, like a contribution graph; the star is pale.
+          const tone = cell.star ? STAR : GREENS[2 + (hash(key + 31) > 0.5 ? 1 : 0)];
+          ctx!.fillStyle = `rgba(${tone[0]}, ${tone[1]}, ${tone[2]}, ${v})`;
+          ctx!.fillRect(cell.x, cell.y, CELL - GAP, CELL - GAP);
+          continue;
+        }
         cell.v -= fade;
         if (cell.v <= 0.01) {
           cells.delete(key);
@@ -114,7 +196,8 @@ export function CursorGrid() {
       }
 
       const settling = target && lit && Math.hypot(target.x - lit.x, target.y - lit.y) > 0.5;
-      if (cells.size || settling) raf = requestAnimationFrame(frame);
+      const decaying = [...cells.values()].some((c) => !c.hold);
+      if (decaying || forming || settling) raf = requestAnimationFrame(frame);
       else last = 0;
     }
 
@@ -123,9 +206,12 @@ export function CursorGrid() {
     }
     const onMove = (e: PointerEvent) => {
       target = { x: e.clientX, y: e.clientY };
+      release();
+      idleTimer = window.setTimeout(formLogo, IDLE_MS);
       wake();
     };
     const onLeave = () => {
+      release();
       target = null;
       lit = null;
     };
@@ -136,6 +222,7 @@ export function CursorGrid() {
     document.addEventListener("pointerleave", onLeave);
     return () => {
       cancelAnimationFrame(raf);
+      window.clearTimeout(idleTimer);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       document.removeEventListener("pointerleave", onLeave);
