@@ -1,4 +1,5 @@
 import dashboard from "../assets/salat-dashboard.png";
+import { PixelHeadline } from "../components/PixelHeadline";
 import { CopyButton, Eyebrow, ProductScreenshot, Reveal } from "../components/ui";
 import { GITHUB, INSTALL_COMMAND, VERSION } from "../content";
 
@@ -9,7 +10,7 @@ export function Hero() {
       <Reveal className="hero-copy">
         <Eyebrow>RUST · RATATUI · LINUX</Eyebrow>
         <h1>
-          Prayer times.
+          <PixelHeadline text="Prayer times." />
           <span>In your terminal.</span>
         </h1>
         <p className="hero-lede">

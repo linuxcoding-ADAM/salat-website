@@ -51,7 +51,7 @@ button:focus-visible,
 
 .cursor-grid {
   position: fixed;
-  z-index: 50; /* above the page, below the navigation (100) */
+  z-index: 0; /* behind the page content: sections are painted after it */
   inset: 0;
   width: 100vw;
   height: 100vh;
@@ -124,7 +124,7 @@ button:focus-visible,
   border-bottom: 1px solid var(--line-soft);
   overflow: hidden;
 }
-.page-section:nth-child(even) { background: #060b13; }
+.page-section:nth-child(even) { background: rgba(6, 11, 19, 0.4); }
 
 /* The hero glow, repeated behind every section (alternating sides). */
 .page-section { isolation: isolate; }
@@ -217,17 +217,36 @@ h1, h2, h3 { font-family: var(--sans); }
 .hero h1 {
   margin-bottom: 24px;
   color: var(--text-bright);
-  font-size: clamp(48px, 5vw, 72px);
-  line-height: 0.98;
-  letter-spacing: -0.04em;
-}
-.hero h1 span {
-  display: block;
-  color: var(--green);
   font-family: var(--pixel);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: clamp(40px, 4.3vw, 62px);
   line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+.hero h1 > span:not(.pixel-headline) {
+  display: block;
+  color: var(--green);
+}
+
+/* "Prayer times." is generated in green pixels, then turns white. */
+.pixel-word { display: inline-block; white-space: nowrap; }
+.pixel-char {
+  display: inline-block;
+  min-width: 0.02em;
+  animation:
+    pixel-in 520ms steps(6, end) var(--d) both,
+    pixel-white 700ms ease 1900ms both;
+}
+@keyframes pixel-in {
+  0% { opacity: 0; color: var(--green); text-shadow: 0 0 0 transparent; }
+  25% { opacity: 1; color: var(--green); text-shadow: 0 0 14px rgba(74, 222, 128, 0.9); }
+  45% { opacity: 0.25; color: var(--green); }
+  65% { opacity: 1; color: var(--green); text-shadow: 0 0 10px rgba(74, 222, 128, 0.7); }
+  100% { opacity: 1; color: var(--green); text-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
+}
+@keyframes pixel-white {
+  from { color: var(--green); text-shadow: 0 0 6px rgba(74, 222, 128, 0.4); }
+  to { color: var(--text-bright); text-shadow: 0 0 0 transparent; }
 }
 
 .hero-lede {
@@ -482,7 +501,7 @@ h1, h2, h3 { font-family: var(--sans); }
 .feature-ledger h3 { margin: 0; color: var(--text-bright); font-size: 20px; }
 .feature-ledger p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.7; }
 
-.interactive-section { background: #040810 !important; }
+.interactive-section { background: rgba(4, 8, 16, 0.5) !important; }
 .demo-instructions { margin: -30px 0 20px; display: flex; flex-wrap: wrap; gap: 8px; }
 .demo-instructions span {
   padding: 6px 9px;
@@ -609,7 +628,7 @@ h1, h2, h3 { font-family: var(--sans); }
 .stack-row strong { color: var(--green); font-size: 10px; }
 .stack-row small { color: var(--dim); font-size: 9px; }
 
-.install-section { background: #050a11 !important; }
+.install-section { background: rgba(5, 10, 17, 0.4) !important; }
 .install-layout { position: relative; }
 .requirements { margin: 30px 0 0; }
 .requirements div {
@@ -750,7 +769,7 @@ footer p { margin: 8px 0 0; color: var(--dim); font-size: 9px; }
   .interactive-shell-bar span:last-child { display: none; }
   .page-section { padding-block: 82px; }
   .hero { padding-top: 104px; }
-  .hero h1 { font-size: clamp(42px, 13vw, 64px); }
+  .hero h1 { font-size: clamp(34px, 10.5vw, 56px); }
 
   .mode-layout, .adhan-layout, .install-layout, .architecture-layout { grid-template-columns: 1fr; }
   .section-heading { margin-bottom: 38px; }
@@ -796,4 +815,5 @@ footer p { margin: 8px 0 0; color: var(--dim); font-size: 9px; }
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; transform: none; }
+  .pixel-char { animation: none; color: var(--text-bright); opacity: 1; }
 }
