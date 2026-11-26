@@ -17,17 +17,14 @@ const GREENS: [number, number, number][] = [
 // The Salat mark (pixel crescent and star), one grid square per character:
 // M = moon, S = star. It appears where the pointer comes to rest.
 const LOGO = [
-  "...........",
-  "...MM...S..",
-  "..MM...SSS.",
-  ".MMM....S..",
-  "MMM........",
-  "MMMM.......",
-  "MMMM.......",
-  "MMMMM......",
-  ".MMMMMMMM..",
-  "..MMMMMM...",
-  "...MMMM....",
+  "......S.",
+  "..M..SSS",
+  ".M....S.",
+  "MM......",
+  "MMM.....",
+  "MMM.....",
+  ".MMMMM..",
+  "..MMM...",
 ];
 const IDLE_MS = 450; // pointer stillness before the mark forms
 const FORM_MS = 260; // how long one square takes to light up
