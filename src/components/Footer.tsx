@@ -1,3 +1,4 @@
+import { Logo } from "./Logo";
 import { DOCS, GITHUB, ISSUES, LICENSE, RELEASES, VERSION } from "../content";
 
 export function Footer() {
@@ -5,7 +6,7 @@ export function Footer() {
     <footer>
       <div>
         <a className="wordmark" href="#top">
-          <span aria-hidden="true">◐</span> SALAT
+          <Logo size={22} /> SALAT
         </a>
         <p>Prayer times and Adhan for the Linux terminal.</p>
       </div>

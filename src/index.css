@@ -84,7 +84,7 @@ button:focus-visible,
   letter-spacing: 0.18em;
   text-decoration: none;
 }
-.wordmark span { color: var(--green); }
+.wordmark svg { flex: none; }
 
 .nav-links { display: flex; align-items: center; gap: 4px; }
 

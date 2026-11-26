@@ -1,3 +1,4 @@
+import { Logo } from "./Logo";
 import { useState } from "react";
 import { GITHUB } from "../content";
 
@@ -7,7 +8,7 @@ export function Nav() {
   return (
     <nav className="site-nav" aria-label="Primary navigation">
       <a className="wordmark" href="#top" aria-label="Salat home">
-        <span aria-hidden="true">◐</span> SALAT
+        <Logo size={22} /> SALAT
       </a>
       <button
         className="menu-toggle"

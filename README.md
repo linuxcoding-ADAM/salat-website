@@ -50,7 +50,7 @@ npm run preview    # serve dist/ locally
 
 ```
 index.html            metadata (title, description, Open Graph, Twitter)
-public/               favicon, og-image.png, robots.txt, sitemap.xml
+public/               pixel-art favicon (SVG, PNG, Apple touch), og-image.png, robots.txt, sitemap.xml
 src/content.ts        links, version, feature and stack data
 src/components/       shared UI, navigation, footer
 src/sections/         one file per page section
