@@ -15,6 +15,7 @@
   --red: #f87171;
   --sans: "Instrument Sans", system-ui, sans-serif;
   --mono: "JetBrains Mono", "Courier New", monospace;
+  --pixel: "Pixelify Sans", var(--mono);
 }
 
 * { box-sizing: border-box; }
@@ -80,8 +81,8 @@ button:focus-visible,
   align-items: center;
   gap: 9px;
   color: var(--text-bright);
-  font: 700 14px var(--mono);
-  letter-spacing: 0.18em;
+  font: 700 20px var(--pixel);
+  letter-spacing: 0.14em;
   text-decoration: none;
 }
 .wordmark svg { flex: none; }
@@ -186,8 +187,8 @@ button:focus-visible,
   gap: 10px;
   margin: 0 0 22px;
   color: var(--green);
-  font: 600 10px var(--mono);
-  letter-spacing: 0.2em;
+  font: 600 13px var(--pixel);
+  letter-spacing: 0.16em;
 }
 .eyebrow span { font-size: 8px; }
 
@@ -211,7 +212,14 @@ h1, h2, h3 { font-family: var(--sans); }
   line-height: 0.98;
   letter-spacing: -0.04em;
 }
-.hero h1 span { display: block; color: var(--green); }
+.hero h1 span {
+  display: block;
+  color: var(--green);
+  font-family: var(--pixel);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+}
 
 .hero-lede {
   max-width: 550px;
@@ -407,7 +415,7 @@ h1, h2, h3 { font-family: var(--sans); }
 .segmented button:last-child { border-right: 0; }
 .segmented button[aria-selected="true"] { background: #0b1a17; color: var(--green); }
 
-.mode-index { margin-bottom: 10px; color: var(--green); font-size: 10px; letter-spacing: 0.15em; }
+.mode-index { margin-bottom: 10px; color: var(--green); font: 600 13px var(--pixel); letter-spacing: 0.14em; }
 .mode-copy h3 { margin-bottom: 14px; color: var(--text-bright); font-size: 30px; }
 .mode-copy > p:not(.mode-index) { color: var(--muted); font-size: 12px; line-height: 1.8; }
 

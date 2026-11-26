@@ -27,7 +27,7 @@ sections to match.
 ## Stack
 
 Vite, React 19 and TypeScript, with plain CSS. Fonts (JetBrains Mono,
-Instrument Sans) are self-hosted through `@fontsource`, so the page makes no
+Instrument Sans, Pixelify Sans for the pixel-style headings) are self-hosted through `@fontsource`, so the page makes no
 third-party requests. There is no analytics and no cookie.
 
 The design comes from a Figma Make project and keeps its layout, palette and
