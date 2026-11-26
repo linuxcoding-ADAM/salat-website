@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react";
 
 const CELL = 18; // px, including the gap
 const GAP = 3;
-const RADIUS = 96; // px around the cursor that lights up
+const RADIUS = 54; // px around the cursor that lights up
+const SPARSE = 0.4; // share of cells in that area that never light (0 = all, 1 = none)
 const FADE_MS = 1500; // time for a fully lit cell to disappear
 const FOLLOW = 0.16; // how quickly the lit area catches up with the pointer (0..1 per frame)
 // Contribution-graph greens, darkest to brightest.
@@ -70,6 +71,7 @@ export function CursorGrid() {
           const d = Math.hypot(c * CELL + CELL / 2 - px, r * CELL + CELL / 2 - py);
           if (d > RADIUS) continue;
           const key = r * cols + c;
+          if (hash(key + 7919) < SPARSE) continue; // keep the trail small and patchy
           // Near cells are brighter; a fixed per-cell factor gives the uneven graph look.
           const s = Math.pow(1 - d / RADIUS, 0.8) * (0.45 + 0.55 * hash(key));
           const cell = cells.get(key);
