@@ -212,33 +212,32 @@ h1, h2, h3 { font-family: var(--sans); }
   align-items: center;
 }
 .hero-copy, .hero-terminal-wrap { position: relative; z-index: 1; min-width: 0; }
+.hero-copy { container-type: inline-size; }
 
 .hero h1 {
   margin-bottom: 24px;
   color: var(--text-bright);
   font-family: var(--sans);
   font-weight: 700;
-  font-size: clamp(40px, 4.3vw, 62px);
+  /* The pixel version of "In your terminal." is about 8.2em wide: the size follows the column
+     so that the headline always stays on two lines, whichever font each letter is in. */
+  font-size: min(clamp(40px, 4.3vw, 62px), 11.5cqw);
   line-height: 1.08;
   letter-spacing: -0.01em;
 }
 .hero-white { display: block; }
-.pixel-loop { display: block; color: var(--green); }
+.pixel-loop {
+  display: block;
+  height: 1.08em; /* the pixel font has other metrics: a fixed height keeps the line from jumping */
+  color: var(--green);
+  white-space: nowrap;
+}
 
 /* Per-character font effects (see PixelText.tsx). */
 .px-word { display: inline-block; white-space: nowrap; }
 
-/* Green text that never stops swapping, character by character, between the two fonts. */
-.px-loop-ch {
-  animation: px-loop 3s step-end infinite;
-  animation-delay: calc(var(--i) * 110ms);
-}
-@keyframes px-loop {
-  0% { font-family: var(--sans); }
-  40% { font-family: var(--pixel); }
-  70% { font-family: var(--sans); }
-  100% { font-family: var(--sans); }
-}
+/* Green text that turns into pixels character by character (state driven, see PixelLoop). */
+.px-loop-ch.is-pixel { font-family: var(--pixel); }
 
 /* On hover the text turns green, then each character quickly becomes a pixel one. */
 .nav-links a:hover:not(.nav-cta),
@@ -251,6 +250,22 @@ h1, h2, h3 { font-family: var(--sans); }
 @keyframes px-morph {
   to { font-family: var(--pixel); }
 }
+/* A green line grows from the left under the hovered navigation link. */
+.nav-links a:not(.nav-cta) { position: relative; }
+.nav-links a:not(.nav-cta)::after {
+  content: "";
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: 6px;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-links a:not(.nav-cta):hover::after,
+.nav-links a:not(.nav-cta):focus-visible::after { transform: scaleX(1); }
 /* Constant-width boxes: the navigation does not shift while the font changes. */
 .pixel-hover-fixed .px-hover-ch {
   display: inline-block;
@@ -773,12 +788,13 @@ footer p { margin: 8px 0 0; color: var(--dim); font-size: 9px; }
   }
   .nav-links[data-open="true"] { display: flex; }
   .nav-links a { padding: 14px 4px; border-bottom: 1px solid var(--line-soft); }
+  .nav-links a:not(.nav-cta)::after { left: 4px; right: 4px; bottom: 8px; }
   .nav-links .nav-cta { margin: 8px 0 0; text-align: center; }
 
   .interactive-shell-bar span:last-child { display: none; }
   .page-section { padding-block: 82px; }
   .hero { padding-top: 104px; }
-  .hero h1 { font-size: clamp(34px, 10.5vw, 56px); }
+  .hero h1 { font-size: min(clamp(34px, 10.5vw, 56px), 11.5cqw); }
 
   .mode-layout, .adhan-layout, .install-layout, .architecture-layout { grid-template-columns: 1fr; }
   .section-heading { margin-bottom: 38px; }
